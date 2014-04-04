@@ -1,0 +1,88 @@
+# script créé le : Fri Mar 21 09:03:43 CET 2014 -   syntaxe MySQL ;
+
+# use  VOTRE_BASE_DE_DONNEE ;
+
+DROP TABLE IF EXISTS QUIZZ ;
+CREATE TABLE QUIZZ (id_quizz int AUTO_INCREMENT NOT NULL,
+id_difficulte INT NOT NULL,
+id_theme INT NOT NULL,
+PRIMARY KEY (id_quizz) ) ENGINE=InnoDB;
+
+DROP TABLE IF EXISTS ADMINISTRATEUR ;
+CREATE TABLE ADMINISTRATEUR (id_admin int AUTO_INCREMENT NOT NULL,
+loginAdmin VARCHAR(100),
+mdpAdmin VARCHAR(20),
+PRIMARY KEY (id_admin) ) ENGINE=InnoDB;
+
+DROP TABLE IF EXISTS JOUEUR ;
+CREATE TABLE JOUEUR (id_joueur int AUTO_INCREMENT NOT NULL,
+loginJoueur VARCHAR(50),
+mdpJoueur VARCHAR(20),
+PRIMARY KEY (id_joueur) ) ENGINE=InnoDB;
+
+DROP TABLE IF EXISTS DIFFICULTE ;
+CREATE TABLE DIFFICULTE (id_difficulte int AUTO_INCREMENT NOT NULL,
+libelleDifficulte VARCHAR(20),
+tempsDifficulte INT,
+PRIMARY KEY (id_difficulte) ) ENGINE=InnoDB;
+
+DROP TABLE IF EXISTS THEME ;
+CREATE TABLE THEME (id_theme int AUTO_INCREMENT NOT NULL,
+libelleTheme VARCHAR(50),
+PRIMARY KEY (id_theme) ) ENGINE=InnoDB;
+
+DROP TABLE IF EXISTS REPONSE ;
+CREATE TABLE REPONSE (id_reponse int AUTO_INCREMENT NOT NULL,
+texteReponse VARCHAR(2000),
+imageReponse VARCHAR(100),
+PRIMARY KEY (id_reponse) ) ENGINE=InnoDB;
+
+DROP TABLE IF EXISTS QUESTION ;
+CREATE TABLE QUESTION (id_question int AUTO_INCREMENT NOT NULL,
+texteQuestion VARCHAR(2000),
+imageQuestion VARCHAR(100),
+id_quizz INT NOT NULL,
+PRIMARY KEY (id_question) ) ENGINE=InnoDB;
+
+DROP TABLE IF EXISTS manipuler ;
+CREATE TABLE manipuler (id_admin int AUTO_INCREMENT NOT NULL,
+id_quizz INT NOT NULL,
+dateMaj DATETIME,
+PRIMARY KEY (id_admin,
+ id_quizz) ) ENGINE=InnoDB;
+
+DROP TABLE IF EXISTS participer ;
+CREATE TABLE participer (id_joueur int AUTO_INCREMENT NOT NULL,
+id_quizz INT NOT NULL,
+score INT,
+date DATETIME,
+temps INT,
+PRIMARY KEY (id_joueur,
+ id_quizz) ) ENGINE=InnoDB;
+
+DROP TABLE IF EXISTS creer ;
+CREATE TABLE creer (id_admin int AUTO_INCREMENT NOT NULL,
+id_quizz INT NOT NULL,
+dateCreation DATETIME,
+PRIMARY KEY (id_admin,
+ id_quizz) ) ENGINE=InnoDB;
+
+DROP TABLE IF EXISTS valider ;
+CREATE TABLE valider (id_question int AUTO_INCREMENT NOT NULL,
+id_reponse INT NOT NULL,
+valide BOOL,
+PRIMARY KEY (id_question,
+ id_reponse) ) ENGINE=InnoDB;
+
+ALTER TABLE QUIZZ ADD CONSTRAINT FK_QUIZZ_id_difficulte FOREIGN KEY (id_difficulte) REFERENCES DIFFICULTE (id_difficulte);
+
+ALTER TABLE QUIZZ ADD CONSTRAINT FK_QUIZZ_id_theme FOREIGN KEY (id_theme) REFERENCES THEME (id_theme);
+ALTER TABLE QUESTION ADD CONSTRAINT FK_QUESTION_id_quizz FOREIGN KEY (id_quizz) REFERENCES QUIZZ (id_quizz);
+ALTER TABLE manipuler ADD CONSTRAINT FK_manipuler_id_admin FOREIGN KEY (id_admin) REFERENCES ADMINISTRATEUR (id_admin);
+ALTER TABLE manipuler ADD CONSTRAINT FK_manipuler_id_quizz FOREIGN KEY (id_quizz) REFERENCES QUIZZ (id_quizz);
+ALTER TABLE participer ADD CONSTRAINT FK_participer_id_joueur FOREIGN KEY (id_joueur) REFERENCES JOUEUR (id_joueur);
+ALTER TABLE participer ADD CONSTRAINT FK_participer_id_quizz FOREIGN KEY (id_quizz) REFERENCES QUIZZ (id_quizz);
+ALTER TABLE creer ADD CONSTRAINT FK_creer_id_admin FOREIGN KEY (id_admin) REFERENCES ADMINISTRATEUR (id_admin);
+ALTER TABLE creer ADD CONSTRAINT FK_creer_id_quizz FOREIGN KEY (id_quizz) REFERENCES QUIZZ (id_quizz);
+ALTER TABLE valider ADD CONSTRAINT FK_valider_id_question FOREIGN KEY (id_question) REFERENCES QUESTION (id_question);
+ALTER TABLE valider ADD CONSTRAINT FK_valider_id_reponse FOREIGN KEY (id_reponse) REFERENCES REPONSE (id_reponse);

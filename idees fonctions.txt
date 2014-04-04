@@ -1,0 +1,14 @@
+- reponse saisie
+- normaliser la difficulté
+
+Pour alléger affichage stats :
+- afficher classement joueur dans tableau de tri des quizz dans partie joueur
+- quand clic sur statss joueurs generiques : pop-up qui dit le nb de quizz dispo et le nb de quizz gg/effectués
+- meme systemes de pop-up par quizz pour stats admin
+
+Archivage/Suppression :
+- Si clic sur supprimer quizz -> Va l'archiver et ne plus le faire apparaitre sur interface
+- Routine qui supprime de la bdd les quizz archivés toutes les semaines
+- Bouton accessible aux admin qui supprime les quizz archivés
+- Afficher derniere date de purge au dessus du bouton 
+- Admin peut voir la liste des quizz archivés, et choisir de les restaurer
